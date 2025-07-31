@@ -1,13 +1,13 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from 'react-leaflet'; // Cambiado Marker por CircleMarker
+import { MapContainer, TileLayer, CircleMarker, Popup, useMapEvents, Marker } from 'react-leaflet'; // Añadido useMapEvents y Marker
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { supabase } from '../supabaseClient';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt, faCheckCircle, faHourglassHalf, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'; // Nuevos iconos
+import { faMapMarkerAlt, faCheckCircle, faHourglassHalf, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import './Map.css';
 
-// Corrige el problema con el ícono del marcador por defecto en react-leaflet (aunque ahora usaremos CircleMarker, es buena práctica mantenerlo)
+// Corrige el problema con el ícono del marcador por defecto en react-leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -26,20 +26,22 @@ const customIcon = new L.Icon({
 });
 
 const LocationMarker = () => {
-  const map = useMap();
-
-  useEffect(() => {
-    map.locate().on("locationfound", function (e) {
+  const map = useMapEvents({
+    locationfound: (e) => {
       map.flyTo(e.latlng, map.getZoom());
       L.marker(e.latlng, { icon: customIcon }).addTo(map)
         .bindPopup("¡Estás aquí!").openPopup();
-    });
+    },
+  });
+
+  useEffect(() => {
+    map.locate();
   }, [map]);
 
   return null;
 };
 
-const Map = forwardRef((props, ref) => {
+const Map = forwardRef(({ onMapClick, selectedLocation }, ref) => {
   const [reports, setReports] = useState([]);
 
   const fetchReports = async () => {
@@ -61,6 +63,15 @@ const Map = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     fetchReports
   }));
+
+  const MapClickHandler = () => {
+    useMapEvents({
+      click: (e) => {
+        onMapClick(e.latlng);
+      },
+    });
+    return null;
+  };
 
   const getCircleColor = (status) => {
     switch (status) {
@@ -93,6 +104,14 @@ const Map = forwardRef((props, ref) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <LocationMarker />
+      <MapClickHandler /> {/* Añade el manejador de clics al mapa */}
+
+      {selectedLocation && (
+        <Marker position={selectedLocation} icon={customIcon}>
+          <Popup>Ubicación seleccionada para el reporte</Popup>
+        </Marker>
+      )}
+
       {reports.map(report => (
         <CircleMarker
           key={report.id}

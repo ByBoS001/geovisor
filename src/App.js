@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './App.css';
 import Map from './components/Map';
@@ -7,12 +7,18 @@ import ReportList from './components/ReportList';
 
 function App() {
   const mapRef = useRef();
+  const [selectedLocation, setSelectedLocation] = useState(null); // Nuevo estado para la ubicación seleccionada
 
   const handleNewReport = useCallback(() => {
     // Llama a la función de refresco de reportes en el componente Map
     if (mapRef.current && mapRef.current.fetchReports) {
       mapRef.current.fetchReports();
     }
+    setSelectedLocation(null); // Limpia la ubicación seleccionada después de enviar un reporte
+  }, []);
+
+  const handleMapClick = useCallback((latlng) => {
+    setSelectedLocation(latlng); // Actualiza la ubicación seleccionada al hacer clic en el mapa
   }, []);
 
   return (
@@ -31,10 +37,10 @@ function App() {
           <Route path="/" element={
             <div className="content-wrapper">
               <main className="map-section">
-                <Map ref={mapRef} />
+                <Map ref={mapRef} onMapClick={handleMapClick} selectedLocation={selectedLocation} />
               </main>
               <aside className="form-section">
-                <ReportForm onNewReport={handleNewReport} />
+                <ReportForm onNewReport={handleNewReport} selectedLocation={selectedLocation} />
               </aside>
             </div>
           } />

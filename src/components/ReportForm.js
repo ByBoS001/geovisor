@@ -1,32 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import './ReportForm.css';
 
-const ReportForm = ({ onNewReport }) => {
+const ReportForm = ({ onNewReport, selectedLocation }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
-  const [status, setStatus] = useState('Reportado'); // Nuevo estado para el formulario
+  const [status, setStatus] = useState('Reportado');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (selectedLocation) {
+      setLatitude(selectedLocation.lat);
+      setLongitude(selectedLocation.lng);
+    }
+  }, [selectedLocation]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
 
-    // Obtener la ubicación actual si los campos de latitud/longitud están vacíos
+    // Si no hay latitud/longitud seleccionada, intenta obtener la ubicación actual
     if (!latitude || !longitude) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
           submitReport(position.coords.latitude, position.coords.longitude);
         },
         (error) => {
           console.error('Error getting location:', error);
-          setMessage('Error al obtener la ubicación. Por favor, ingrese la latitud y longitud manualmente.');
+          setMessage('Error al obtener la ubicación. Por favor, haga clic en el mapa o ingrese la latitud y longitud manualmente.');
           setLoading(false);
         }
       );
@@ -39,7 +44,7 @@ const ReportForm = ({ onNewReport }) => {
     const { data, error } = await supabase
       .from('reports')
       .insert([
-        { title, description, latitude: lat, longitude: lon, status: status } // Incluye el estado
+        { title, description, latitude: lat, longitude: lon, status: status }
       ]);
 
     if (error) {
@@ -51,9 +56,9 @@ const ReportForm = ({ onNewReport }) => {
       setDescription('');
       setLatitude('');
       setLongitude('');
-      setStatus('Reportado'); // Reinicia el estado a 'Reportado' después de enviar
+      setStatus('Reportado');
       if (onNewReport) {
-        onNewReport(); // Notifica al componente padre (Map) que hay un nuevo reporte
+        onNewReport();
       }
     }
     setLoading(false);
@@ -82,23 +87,25 @@ const ReportForm = ({ onNewReport }) => {
           ></textarea>
         </div>
         <div className="form-group">
-          <label htmlFor="latitude">Latitud (opcional):</label>
+          <label htmlFor="latitude">Latitud:</label>
           <input
             type="number"
             id="latitude"
             value={latitude}
             onChange={(e) => setLatitude(e.target.value)}
             step="any"
+            required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="longitude">Longitud (opcional):</label>
+          <label htmlFor="longitude">Longitud:</label>
           <input
             type="number"
             id="longitude"
             value={longitude}
             onChange={(e) => setLongitude(e.target.value)}
             step="any"
+            required
           />
         </div>
         <div className="form-group">
