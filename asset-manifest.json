@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/geovisor/static/css/main.6ff835bf.css",
-    "main.js": "/geovisor/static/js/main.7c6d2cf8.js",
+    "main.js": "/geovisor/static/js/main.c6ad71f2.js",
     "static/js/453.cc8d9b53.chunk.js": "/geovisor/static/js/453.cc8d9b53.chunk.js",
     "index.html": "/geovisor/index.html",
     "main.6ff835bf.css.map": "/geovisor/static/css/main.6ff835bf.css.map",
-    "main.7c6d2cf8.js.map": "/geovisor/static/js/main.7c6d2cf8.js.map",
+    "main.c6ad71f2.js.map": "/geovisor/static/js/main.c6ad71f2.js.map",
     "453.cc8d9b53.chunk.js.map": "/geovisor/static/js/453.cc8d9b53.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6ff835bf.css",
-    "static/js/main.7c6d2cf8.js"
+    "static/js/main.c6ad71f2.js"
   ]
 }
