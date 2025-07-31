@@ -1,0 +1,51 @@
+.map-container {
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .leaflet-popup-content {
+    margin: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .leaflet-popup-content h5 {
+    margin: 0 0 10px;
+    color: #333;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .leaflet-popup-content h5 .status-icon {
+    margin-right: 8px;
+  }
+  
+  .leaflet-popup-content p {
+    margin: 0;
+    color: #555;
+    font-size: 0.95rem;
+  }
+  
+  .leaflet-popup-tip-container {
+    visibility: hidden; /* Opcional: oculta la punta del popup para un look más limpio */
+  }
+  
+  /* Estilos para los iconos de estado en el mapa */
+  .status-icon.resolved {
+    color: #28a745; /* Verde */
+  }
+  
+  .status-icon.pending {
+    color: #ffc107; /* Amarillo/Naranja */
+  }
+  
+  .status-icon.reported {
+    color: #dc3545; /* Rojo */
+  }

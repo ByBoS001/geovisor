@@ -1,0 +1,134 @@
+.report-list-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+  
+  .report-list-container h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2rem;
+  }
+  
+  .report-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .report-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .report-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .report-card h3 {
+    color: #34495e;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .report-card h3 svg {
+    margin-right: 10px;
+    color: #e74c3c; /* Color para el icono de marcador */
+  }
+  
+  .report-card p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .report-card p svg {
+    margin-right: 10px;
+    color: #3498db; /* Color para otros iconos */
+    flex-shrink: 0;
+    margin-top: 3px; /* Ajuste para alinear con el texto */
+  }
+  
+  .report-card .report-coords {
+    font-size: 0.85rem;
+    color: #777;
+  }
+  
+  .report-card .report-date {
+    font-size: 0.85rem;
+    color: #777;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    margin-top: 15px;
+  }
+  
+  .report-status {
+    font-weight: bold;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    text-align: right;
+  }
+  
+  /* Estilos para los iconos de estado */
+  .status-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+  }
+  
+  .status-icon.resolved {
+    color: #28a745; /* Verde */
+  }
+  
+  .status-icon.pending {
+    color: #ffc107; /* Amarillo/Naranja */
+  }
+  
+  .status-icon.reported {
+    color: #dc3545; /* Rojo */
+  }
+  
+  /* Estilos para las tarjetas según el estado */
+  .report-card.status-resuelto {
+    border-left: 5px solid #28a745;
+  }
+  
+  .report-card.status-pendiente {
+    border-left: 5px solid #ffc107;
+  }
+  
+  .report-card.status-reportado {
+    border-left: 5px solid #dc3545;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  /* Media queries para responsividad */
+  @media (max-width: 768px) {
+    .report-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .report-list-container {
+      padding: 15px;
+      margin: 10px auto;
+    }
+  }
